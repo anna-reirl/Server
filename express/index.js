@@ -22,6 +22,13 @@ app.delete('/',(req, res) => {
     res.send('I have received your DELETE request');
 });
 
+app.get('/users/:id', (req, res) => {
+    const id = req.params.id;
+    const sorting = req.query.sorting;
+    res.send(`You have received data on user #${id} with ${sorting} sorting`);
+})
+
 app.listen(8000, () => {
     console.log('Server is listening on port 8000')
 });
+
