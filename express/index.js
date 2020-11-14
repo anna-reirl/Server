@@ -2,13 +2,29 @@ const express = require('express');
 
 const app = express();
 
+function looggerMiddleware(req, res, next) {
+    rconsole.log(`[${req.method}] - ${req.url}`)
+    next();
+}
+
+app.use(looggerMiddleware)
+
 app.get('/',(req, res) => {
     res.statusCode = 418;
     res.setHeader('X-Custom-header','SkillFactory')
     res.send('I have received your GET request');
 });
 
-app.post('/',(req, res) => {
+function authModdleleware(req, res, next) {
+    if(req.headers['authorization' !== undefined]) {
+        next()
+    } else {
+        res.statusCode = 401
+        res.send('Error! You need to athorize')
+    }
+}
+
+app.post('/', authModdleleware, (req, res) => {
     console.log(req.url);
     console.log(req.headers);
     res.send('I have received your POST request');
